@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     TextView jsonText;
     Button playButton;
 
+    private static final String path = "/sdcard/emotion.json";
+
     private static final String JSONString = "{\"address\":\"上海\",\"id\":3,\"name\":\"daming\"}";
 
     @Override
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         parseJsonText = (TextView) findViewById(R.id.parseJSON);
         IDString = (TextView) findViewById(R.id.IDString);
         nameTest = (TextView) findViewById(R.id.nameTest);
-        jsonText = (TextView) findViewById(R.id.jsonText);
+        jsonText = (TextView) findViewById(R.id.textView);
 
         playButton = (Button)findViewById(R.id.play_music);
 
@@ -91,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onGetText(View view){
+    public String getFileContent(String path){
         String JSONString2 = "";
         try {
             Log.d(TAG, ">>>>>>>>>>entry try-catch");
-            FileInputStream inputStream = new FileInputStream(new File("/sdcard/json.json"));
+            FileInputStream inputStream = new FileInputStream(new File(path));
             Log.d(TAG, ">>>>>>>>>>get a file");
             byte[] bytes = new byte[1024];
             ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
@@ -109,14 +111,17 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        jsonText.setText(JSONString2);
+        return JSONString2;
+    }
 
+    public void onGetText(View v){
         try {
-            JSONTokener jsonTokener = new JSONTokener(JSONString2);
+            JSONTokener jsonTokener = new JSONTokener(getFileContent(path));
             JSONObject jsonObject = (JSONObject) jsonTokener.nextValue();
-            parseJsonText.setText(jsonObject.getString("address"));
-            IDString.setText(jsonObject.getString("id"));
-            nameTest.setText(jsonObject.getString("name"));
+            parseJsonText.setText("faceFlv: " + jsonObject.getString("faceFlv"));
+            IDString.setText("voiceFile: " + jsonObject.getString("voiceFile"));
+            nameTest.setText("duration: " + jsonObject.getString("duration"));
+            jsonText.setText("repeat: " + jsonObject.getString("repeat"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
