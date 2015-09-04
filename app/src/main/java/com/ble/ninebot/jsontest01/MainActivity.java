@@ -1,5 +1,6 @@
 package com.ble.ninebot.jsontest01;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -125,5 +126,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onPlaySWF(View v){
+        Intent intent = new Intent(MainActivity.this, PlaySWF.class);
+        startActivity(intent);
     }
 }
